@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講習会ページ</title>
+</head>
+<body>
+    <h1>講習会ページ</h1>
+    <table id="course-list">
+        <tr>
+            <th>年度</th>
+            <th>時期</th>
+            <th>開始日</th>
+            <th>終了日</th>
+        </tr>
+    </table>
+    <br>
+    <button onclick="location.href='add_course.html'">講習会を追加</button>
+    <button onclick="location.href='delete_course.html'">講習会を削除</button>
+    <br><br>
+    <button onclick="location.href='index.html'">メインページに戻る</button>
+
+    <script>
+        // 追加された講習会を表示するための処理
+        let courses = JSON.parse(localStorage.getItem('courses')) || [];
+
+        function displayCourses() {
+            const table = document.getElementById('course-list');
+            const seasonOrder = { '春期': 1, '夏期': 2, '冬期': 3 };
+            courses.sort((a, b) => {
+                if (a.year !== b.year) {
+                    return a.year - b.year; // 年度を昇順でソート
+                } else {
+                    return seasonOrder[a.season] - seasonOrder[b.season]; // 年度が同じ場合は時期でソート
+                }
+            });
+            courses.forEach(course => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = course.year;
+                row.insertCell(1).innerText = course.term;
+                row.insertCell(2).innerText = course.start;
+                row.insertCell(3).innerText = course.end;
+            });
+        }
+
+        window.onload = displayCourses;
+    </script>
+</body>
+</html>

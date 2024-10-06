@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講師削除ページ</title>
+</head>
+<body>
+    <h1>講師削除ページ</h1>
+    <table id="teacher-list">
+        <tr>
+            <th>講師名</th>
+            <th>選択</th>
+        </tr>
+    </table>
+    <br>
+    <button onclick="deleteTeacher()">この講師を削除する</button><br><br>
+    <button onclick="location.href='teacher.html'">講師ページに戻る</button>
+
+    <script>
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+
+        function displayTeachers() {
+            const table = document.getElementById('teacher-list');
+            table.innerHTML = `
+                <tr>
+                    <th>講師名</th>
+                    <th>選択</th>
+                </tr>
+            `;
+            teachers.forEach((teacher, index) => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = teacher.name;
+                row.insertCell(1).innerHTML = `<input type="radio" name="teacher" value="${index}">`;
+            });
+        }
+
+        function deleteTeacher() {
+            const selected = document.querySelector('input[name="teacher"]:checked');
+            if (!selected) {
+                alert('削除する講師を選択してください');
+                return;
+            }
+
+            teachers.splice(selected.value, 1);
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+            alert('講師を削除しました');
+            displayTeachers();
+
+        }
+
+        window.onload = displayTeachers;
+    </script>
+</body>
+</html>

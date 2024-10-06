@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講師ページ</title>
+</head>
+<body>
+    <h1>講師ページ</h1>
+    <table id="teacher-list">
+        <tr>
+            <th>講師名</th>
+        </tr>
+    </table>
+    <br>
+    <button onclick="location.href='add_teacher.html'">講師を追加</button>
+    <button onclick="location.href='delete_teacher.html'">講師を削除</button>
+    <br><br>
+    <button onclick="location.href='index.html'">メインページに戻る</button>
+
+    <script>
+        // 追加された講師を表示するための処理
+        let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+
+        function displayTeachers() {
+            const table = document.getElementById('teacher-list');
+            teachers.forEach(teacher => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = teacher.name;
+            });
+        }
+
+        window.onload = displayTeachers;
+    </script>
+</body>
+</html>

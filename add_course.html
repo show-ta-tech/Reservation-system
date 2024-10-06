@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講習会追加</title>
+</head>
+<body>
+    <h1>講習会追加ページ</h1>
+    <label for="year">年度:</label>
+    <input type="number" id="year" value="2024"><br><br>
+
+    <label for="term">時期:</label>
+    <select id="term">
+        <option value="">選択してください</option>
+        <option value="春期">春期</option>
+        <option value="夏期">夏期</option>
+        <option value="冬期">冬期</option>
+    </select><br><br>
+
+    <label for="start">開始日:</label>
+    <input type="date" id="start"><br><br>
+
+    <label for="end">終了日:</label>
+    <input type="date" id="end"><br><br>
+
+    <button onclick="addCourse()">この講習会を追加する</button><br><br>
+    <button onclick="location.href='courses.html'">講習会ページに戻る</button>
+
+    <script>
+        function addCourse() {
+            const year = document.getElementById('year').value;
+            const term = document.getElementById('term').value;
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
+
+            if (!term||!start||!end) {
+                alert('時期、期間を設定してください');
+                return;
+            }
+
+            let courses = JSON.parse(localStorage.getItem('courses')) || [];
+
+            const exists = courses.some(course => course.year === year && course.term === term);
+            if (exists) {
+                alert('その講習会はすでに存在しています。');
+                return;
+            }
+
+            courses.push({ year, term, start, end });
+            localStorage.setItem('courses', JSON.stringify(courses));
+
+            alert('講習会を追加しました');
+        }
+    </script>
+</body>
+</html>

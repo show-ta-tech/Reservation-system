@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講師追加ページ</title>
+</head>
+<body>
+    <h1>講師追加ページ</h1>
+    <label for="teacher-name">講師名:</label>
+    <input type="text" id="teacher-name"><br><br>
+
+    <button onclick="addTeacher()">この講師を追加する</button><br><br>
+    <button onclick="location.href='teacher.html'">講師ページに戻る</button>
+
+    <script>
+        function addTeacher() {
+            const name = document.getElementById('teacher-name').value;
+
+            if (!name) {
+                alert('講師名を入力してください');
+                return;
+            }
+
+            let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+            const exists = teachers.some(teacher => teacher.name === name);
+            if(exists){
+                alert('その講師はすでに存在しています');
+                return;
+            }
+            teachers.push({ name });
+            localStorage.setItem('teachers', JSON.stringify(teachers));
+
+            alert('講師を追加しました');
+            document.getElementById('teacher-name').value = '';
+        }
+    </script>
+</body>
+</html>

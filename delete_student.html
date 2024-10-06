@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生徒削除ページ</title>
+</head>
+<body>
+    <h1>生徒削除ページ</h1>
+    <table id="student-list">
+        <tr>
+            <th>生徒名</th>
+            <th>選択</th>
+        </tr>
+    </table>
+    <br>
+    <button onclick="deleteStudent()">この生徒を削除する</button><br><br>
+    <button onclick="location.href='student.html'">生徒ページに戻る</button>
+
+    <script>
+        let students = JSON.parse(localStorage.getItem('students')) || [];
+
+        function displayStudents() {
+            const table = document.getElementById('student-list');
+            table.innerHTML = `
+            <tr>
+                <th>生徒名<th>
+                <th>選択<th>
+            </tr>
+            `;
+            students.forEach((student, index) => {
+                const row = table.insertRow();
+                row.insertCell(0).innerText = student.name;
+                row.insertCell(1).innerHTML = `<input type="radio" name="student" value="${index}">`;
+            });
+        }
+
+        function deleteStudent() {
+            const selected = document.querySelector('input[name="student"]:checked');
+            if (!selected) {
+                alert('削除する生徒を選択してください');
+                return;
+            }
+
+            students.splice(selected.value, 1);
+            localStorage.setItem('students', JSON.stringify(students));
+            alert('生徒を削除しました');
+            displayStudents();
+        }
+
+        window.onload = displayStudents;
+    </script>
+</body>
+</html>
